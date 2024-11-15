@@ -1,0 +1,2 @@
+go mod init github.com/gitterencio/wswgo
+go get -u github.com/Rhymen/go-whatsapp
