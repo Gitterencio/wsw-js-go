@@ -1,5 +1,6 @@
 const { Client } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+var fs = require('fs');
 // Create a new client instance
 const client = new Client();
 
