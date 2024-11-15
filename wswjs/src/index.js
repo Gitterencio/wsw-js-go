@@ -18,7 +18,7 @@ client.once('ready', async () => {
 
         // Mostrar los mensajes
         messages.reverse().forEach((message, idx) => {
-            console.log(message.id)
+            console.log(message.id._serialized)
             console.log(`   ${idx + 1}. ${message.body || '(Mensaje vacío)'}`);
         });
     }
@@ -34,6 +34,22 @@ client.on('qr', (qr) => {
 client.initialize();
 
 
-client.on('message_create', message => {
-	console.log(message.body);
+client.on('message_create',async message => {
+	if (message.body === '!ping') {
+		// reply back "pong" directly to the message
+		message.reply('pong');
+	}
+    console.log(message)
+    const media = await message.downloadMedia();
+
+    if (media) {
+        // Guardar el archivo según su tipo MIME
+        const fileExtension = media.mimetype.split('/')[1]; // Obtener la extensión del archivo
+        const fileName = `media_${message.id.id}.${fileExtension}`;
+
+        fs.writeFileSync(fileName, media.data, { encoding: 'base64' });
+        console.log(`Archivo guardado como: ${fileName}`);
+    } else {
+        console.log('No se pudo descargar el medio.');
+    }
 });
